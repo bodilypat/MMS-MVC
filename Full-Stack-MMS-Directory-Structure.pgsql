@@ -1,5 +1,91 @@
-Full-Stack-MMS-Directory-Structure(no framework)/
+Full-Stack-MMS-Directory-Structure
 │
+├── backend/
+│   ├── public/                              
+│   │   ├── index.php                        
+│   │   ├── assets/                          
+│   │   └── uploads/     
+│   │                                        
+│   ├── config/                              
+│   │   ├── database.php
+│   │   ├── constants.php
+│   │   ├── env.php
+│   │   └── app.php
+│   │ 
+│   ├── routes/                              
+│   │   ├── api/
+│   │   │   ├── auth.php                             # Authentication: Login, logout, refresh tokem
+│   │   │   ├── patients.php
+│   │   │   ├── doctors.php
+│   │   │   ├── appointments.php
+│   │   │   ├── prescriptions.php
+│   │   │   ├── lab-tests.php
+│   │   │   ├── billings.php
+│   │   │   ├── insurance.php
+│   │   │   └── reports.php
+│   │   └── web.php                                  # Web routes 
+│   │
+│   ├── app/                         
+│   │   ├── controllers/
+│   │   │   ├── AuthController.php
+│   │   │   ├── PatientController.php
+│   │   │   ├── DoctorController.php
+│   │   │   ├── AppointmentController.php
+│   │   │   ├── PrescriptionController.php
+│   │   │   ├── MedicalRecordController.php
+│   │   │   ├── LabTestController.php
+│   │   │   ├── BillingControllers.php
+│   │   │   ├── InsuranceController.php
+│   │   │   └── reportController.php
+│   │   ├── Models/
+│   │   │   ├── BaseModel.php
+│   │   │   ├── User.php
+│   │   │   ├── Patient.php
+│   │   │   ├── Doctor.php
+│   │   │   ├── Appointment.php
+│   │   │   ├── Prescription.php
+│   │   │   ├── LabTest.php
+│   │   │   ├── Billing.php
+│   │   │   ├── Insurance.php
+│   │   │   └── Payment.php
+│   │	├── Services/                               
+│   │	│   ├── AppointmentService.php
+│   │	│   ├── ReportService.php
+│   │	│   └── NotificationService.php
+│   │	│ 
+│   │   ├── middleware/      
+│   │   │   ├── AuthMiddleware.php                     
+│   │   │   └── RoleMiddleware.php
+│   │   │ 
+│   │   ├── Repositories/
+│   │   │   ├── PatientRepository              
+│   │   │   └── ReportService.php
+│   │   │ 
+│   │   ├── helpers/                              
+│   │   │   ├── auth.php
+│   │   │   ├── response.php
+│   │   │   ├── validator.php
+│   │   │   └── logger.php
+│   │   │
+│   │   └── Validators/ 
+│   │       ├── PatientTest.php                        
+│   │       └── AuthTest.php   
+│   ├── storage/    
+│   │   ├── database.php
+│   │   │   └── error.log
+│   │   ├── temp/
+│   │   └── exports/   
+│   ├── database/                              
+│   │   ├── migrations/
+│   │   ├── seeders/
+│   │   └── backups/ 
+│   └── test/  
+│   	├── unit/
+│       │   ├── PatientTest.php
+│       │   └── AuthTest.php
+│   	├── Integration/
+│       │   └── AppointmentFlowTest.php
+│       └── README.md    
 ├── frontend/                         # Front-end static app       
 │   ├── public                        # Static entry point for deployment  
 │   │   └── index.html                # Entry login/landing page
@@ -76,87 +162,6 @@ Full-Stack-MMS-Directory-Structure(no framework)/
 │   │ 
 │   ├── README.md 
 │   └── LICENSE                    
-│
-├── backend/
-│   ├── public/                              
-│   │   ├── index.php                        
-│   │   ├── assets/                          
-│   │   └── uploads/     
-│   │                                        
-│   ├── config/                              
-│   │   ├── database.php
-│   │   ├── constants.php
-│   │   └── env.php
-│   │ 
-│   ├── routes/                              
-│   │   ├── api/
-│   │   │   ├── auth.php
-│   │   │   ├── patients.php
-│   │   │   ├── doctors.php
-│   │   │   ├── appointments.php
-│   │   │   └── reports.php
-│   │   └── web.php
-│   │
-│   ├── app/                         
-│   │   ├── controllers/
-│   │   │   ├── AuthController.php
-│   │   │   ├── PatientController.php
-│   │   │   ├── DoctorController.php
-│   │   │   ├── Appointments.php
-│   │   │   ├── PrescriptionController.php
-│   │   │   ├── MedicalRecordController.php
-│   │   │   ├── LabTestController.php
-│   │   │   ├── BillingControllers.php
-│   │   │   ├── InsuranceController.php
-│   │   │   └── reportController.php
-│   │   ├── Models/
-│   │   │   ├── User.php
-│   │   │   ├── Patient.php
-│   │   │   ├── Doctor.php
-│   │   │   ├── Appointment.php
-│   │   │   ├── Prescription.php
-│   │   │   ├── LabTest.php
-│   │   │   ├── Billing.php
-│   │   │   ├── Insurance.php
-│   │   │   └── Payment.php
-│   │	├── Services/                               
-│   │	│   ├── AppointmentService.php
-│   │	│   ├── ReportService.php
-│   │	│   └── NotificationService.php
-│   │	│ 
-│   │   ├── middleware/      
-│   │   │   ├── AuthMiddleware.php                     
-│   │   │   └── RoleMiddleware.php
-│   │   │ 
-│   │   ├── Repositories/
-│   │   │   ├── PatientRepository              
-│   │   │   └── ReportService.php
-│   │   │ 
-│   │   ├── helpers/                              
-│   │   │   ├── auth.php
-│   │   │   ├── response.php
-│   │   │   ├── validator.php
-│   │   │   └── logger.php
-│   │   │
-│   │   └── Validators/ 
-│   │       ├── PatientTest.php                        
-│   │       └── AuthTest.php   
-│   ├── storage/    
-│   │   ├── database.php
-│   │   │   └── error.log
-│   │   ├── temp/
-│   │   └── exports/   
-│   ├── database/                              
-│   │   ├── migrations/
-│   │   ├── seeders/
-│   │   └── backups/ 
-│   └── test/  
-│   	├── unit/
-│       │   ├── PatientTest.php
-│       │   └── AuthTest.php
-│   	├── Integration/
-│       │   └── AppointmentFlowTest.php
-│       └── README.md    
 │
 ├── .env                                      
 ├── .htaccess                                 
