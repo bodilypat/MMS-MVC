@@ -1,169 +1,104 @@
-Full-Stack-MMS-Directory-Structure
+Full-Stack-Medical-Management System-Directory-Structure
+├── backend/                                                   # Backend RESTful API (PHP MVC)
+│   │ 
+│   ├── app/                                               
+│   │   ├── /controllers/                                      # Controllers handle HTTP requests
+│   │   │   ├── PatientController.php 
+│   │   │   ├── DoctorController.php                           
+│   │   │   ├── AppointmentController.php             
+│   │   │   └── AuthController.php
+│   │   ├── /models/                                           # Models handle database interation
+│   │   │   ├── Patient.php      
+│   │   │   ├── Doctor.php                       
+│   │   │   ├── Appointment.php             
+│   │   │   └── User.php
+│   │   ├── core/		                                       # Core utilites & framework Logic
+│   │   │   ├── Database.php 
+│   │   │   ├── Router.php                         
+│   │   │   ├── Response.php             
+│   │   │   └── Auth.php
+│   │   ├── config/		                                       # Configuration files               
+│   │   │   ├── config.php                                     # DB credentials, environment setup                                               
+│   │   │   └── constants.php		                           # Global constants
+│   │   └── helper/          
+│   │       ├── Validator.php                                  # Optioal: extra functions
+│   │       └── Utils.php                      
+│   ├── public/                                                # Public-facing direction (entry point)
+│   │   ├── index.php                                          # API entry point
+│   │   └── .htaccess                                          # URL rewriting for clean endpoints
+│   ├── storage/                                               # For peristent files (Logs, upload, reports)
+│   │  	├── logs/
+│   │   │   └── api.log
+│   │   └── uploads/ 
+│   │        └── patient_docs/  
+│   │    
+│   ├── tests/                                                 # Unit and integration tests (Optional)
+│   │   └── PatientTest.php 
+│   ├── vendor/                                                # Composer dependencies
+│   │   
+│   ├── composer.json                                          # For autoloading and package management
+│   └── README.md                                                                 
 │
-├── backend/
-│   ├── public/                              
-│   │   ├── index.php                        
-│   │   ├── assets/                          
-│   │   └── uploads/     
-│   │                                        
-│   ├── config/                              
-│   │   ├── database.php
-│   │   ├── constants.php
-│   │   ├── env.php
-│   │   └── app.php
-│   │ 
-│   ├── routes/                              
-│   │   ├── api/
-│   │   │   ├── auth.php                             # Authentication: Login, logout, refresh tokem
-│   │   │   ├── patients.php
-│   │   │   ├── doctors.php
-│   │   │   ├── appointments.php
-│   │   │   ├── prescriptions.php
-│   │   │   ├── lab-tests.php
-│   │   │   ├── billings.php
-│   │   │   ├── insurance.php
-│   │   │   └── reports.php
-│   │   └── web.php                                  # Web routes 
-│   │
-│   ├── app/                         
-│   │   ├── controllers/
-│   │   │   ├── AuthController.php
-│   │   │   ├── PatientController.php
-│   │   │   ├── DoctorController.php
-│   │   │   ├── AppointmentController.php
-│   │   │   ├── PrescriptionController.php
-│   │   │   ├── MedicalRecordController.php
-│   │   │   ├── LabTestController.php
-│   │   │   ├── BillingControllers.php
-│   │   │   ├── InsuranceController.php
-│   │   │   └── reportController.php
-│   │   ├── Models/
-│   │   │   ├── BaseModel.php
-│   │   │   ├── User.php
-│   │   │   ├── Patient.php
-│   │   │   ├── Doctor.php
-│   │   │   ├── Appointment.php
-│   │   │   ├── Prescription.php
-│   │   │   ├── LabTest.php
-│   │   │   ├── Billing.php
-│   │   │   ├── Insurance.php
-│   │   │   └── Payment.php
-│   │	├── Services/                               
-│   │	│   ├── AppointmentService.php
-│   │	│   ├── ReportService.php
-│   │	│   └── NotificationService.php
-│   │	│ 
-│   │   ├── middleware/      
-│   │   │   ├── AuthMiddleware.php                     
-│   │   │   └── RoleMiddleware.php
+├── frontend/                                                  # Frontend Static or SPA (Java Script MVC)       
+│   ├── index.html                                             # Main entry point (Dashbord or Login)
+│   ├── css/   
+│   │   ├── style.css                                          # Stylesheets
+│   │   └── theme.css                                          # Theme variables/colors
+│   ├── js/  
+│   │   ├── app.js                                             # Application bootstrap & router initialization
+│   │   │                           
+│   │   ├── core/                                              # Core utilities (Shared Logic)
+│   │   │   ├── api.js                                         # Handles API calls (fetch/axios)
+│   │   │   ├── router.js                                      # SPA navigation (hash-based or pushState)
+│   │   │   └── utils.js                                       # Helper functions ( formatting, validation)
 │   │   │ 
-│   │   ├── Repositories/
-│   │   │   ├── PatientRepository              
-│   │   │   └── ReportService.php
+│   │   ├── models/                                            # Frontend Models ( data layer)
+│   │   │   ├── PatientModel.js                     
+│   │   │   ├── DoctorModel.js             
+│   │   │   └── AppointmentModel.js
 │   │   │ 
-│   │   ├── helpers/                              
-│   │   │   ├── auth.php
-│   │   │   ├── response.php
-│   │   │   ├── validator.php
-│   │   │   └── logger.php
-│   │   │
-│   │   └── Validators/ 
-│   │       ├── PatientTest.php                        
-│   │       └── AuthTest.php   
-│   ├── storage/    
-│   │   ├── database.php
-│   │   │   └── error.log
-│   │   ├── temp/
-│   │   └── exports/   
-│   ├── database/                              
-│   │   ├── migrations/
-│   │   ├── seeders/
-│   │   └── backups/ 
-│   └── test/  
-│   	├── unit/
-│       │   ├── PatientTest.php
-│       │   └── AuthTest.php
-│   	├── Integration/
-│       │   └── AppointmentFlowTest.php
-│       └── README.md    
-├── frontend/                         # Front-end static app       
-│   ├── public                        # Static entry point for deployment  
-│   │   └── index.html                # Entry login/landing page
-│   ├── pages/                        # Pages routed via hash or history 
-│   │   ├── dasdboard/                # Dashboard & layout-specific views    
-│   │   │   ├── home.html                    
-│   │   │   └── overview.html    
-│   │   └── modules/  
-│   │ 		├── patients/
-│   │   	│   ├── list.html                    
-│   │  		│   ├── add.html                     
-│   │   	│   ├── view.html                    
-│   │   	│   └── edit.html 
-│   │   	├── doctors/
-│   │   	│   ├── list.html                    
-│   │   	│   ├── add.html                     
-│   │   	│   ├── profile.html                    
-│   │   	│   └── schedule.html  
-│   │   	├── appointments/                
-│   │   	│   ├── list.html                     
-│   │   	│   ├── book.html                    
-│   │   	│   └── calendor.html      
-│   │   	├── prescriptions/
-│   │   	│   ├── list.html                                 
-│   │   	│   └── add.html 
-│   │   	├── lab-tests/
-│   │   	│   ├── list.html                                
-│   │   	│   └── results.html     
-│   │   	├── payments/
-│   │   	│   ├── invoices.html                                   
-│   │   	│   └── receipt.html          
-│   │   	├── insurance/
-│   │   	│   ├── polices.html                                      
-│   │   	│   └── claim.html  
-│   │   	├── pharmacies/
-│   │   	│   ├── list.html                                    
-│   │   	│   └── orders.html  
-│   │   	└── reports/ 
-│   │       	├── summary.html                   
-│   │       	└── charts.html                
-│   ├── components/							# Reusable UI parts
-│   │   ├── layout/  
-│   │   │   ├── navbar.html 
-│   │   │   ├── sidebar.html 
-│   │   │   └── footer.html            
-│   │   └── modals/ 
-│   │       └── confirm-delete.html
-│   ├── assets/                              
-│   │   ├── css/
-│   │   │   ├── main.css                    # Global styles
-│   │   │   ├── layout.css                  # Layout-specific styles 
-│   │   │   └── module/                     # Module-specific styles 
-│   │   │       ├── patients.css
-│   │   │       ├── doctors.css
-│   │   │       └── appointments.css
+│   │   ├── views/                                             # Responsible for rendering UI components
+│   │   │   ├── DashboardView.js      
+│   │   │   ├── PatientView.js                  
+│   │   │   ├── DoctorView.js             
+│   │   │   └── AppointmentView.js
 │   │   │ 
-│   │   ├── js/
-│   │   │   ├── main.js                      # Bootstrap/init script
-│   │   │   ├── auth.js                      # Auth logic
-│   │   │   ├── api.js                       # API service (XHR/fetch)
-│   │   │   └── module/                      # Module-specific JS
-│   │   │       ├── patients.js
-│   │   │       ├── doctors.js
-│   │   │       └── appointments.js
-│   │   └── images/
-│   │       └── Logo.png
+│   │   └── controllers/                                       # Handle user interactions & connect Model <-> View
+│   │ 		├── DashboardController.js
+│   │   	├── PatientController.js
+│   │   	├── DoctorController.js                   
+│   │   	└── AppointmentController.js       
+│   ├── assets/                                                # Static assets ( images, icon, fonts )
+│   │   ├── images/
+│   │   │   ├── logo.png            
+│   │   │   ├── doctor.svg      
+│   │   │   └── patient.svg
+│   │   ├── fonts/
+│   │   └── icons/              
 │   │ 
+│   ├── pages/                                                 # HTML hemplates or partials for SPA views
+│   │   ├── dashboardh.html
+│   │   ├── patient.html
+│   │   ├── doctors.html
+│   │   └── appointments.html
+│   ├── components/                                            # Optional reusable UI components ( modals, table, forms)
+│   │   ├── Modal.js
+│   │   └── Table.js
 │   │ 
-│   ├── utils/                               # Utility scripts/helpers
-│   │   ├── form-validation.js
-│   │   └── date-utils.js 
-│   ├── store/                               # (optional) Shared data/state (local/session/user)
-│   │   └── session.js 
-│   │ 
-│   ├── README.md 
-│   └── LICENSE                    
+│   └── README.md                 
 │
-├── .env                                      
-├── .htaccess                                 
-├── composer.json                             
-└── README.md
+└── docs/                                                      # Documention folder
+	├── API.md                                                 # Backend API document (endpoints)
+	├── FRONTEND.md                                            # Frontend usage and architecture
+	├── SETUP.md                                               # Setup instructions for developers
+    └── ERD.png                                                # Database ER diagram
+
+Frontend(JS MVC) ->PatientController.js->PatientModel.js->Api.js(fetch)
+
+backend(PHP MVC) -> Router.php -> PatientController.php -> Patient.php(Modal) -> Database.php
+
+Response.php -> returns JSON -> displayed by PatientView.js 
+
+Backend server:  http://localhost/medical-ms/backend/public/
+
+Frontend app: http://localhost/medical-ms/frontend/index.html
