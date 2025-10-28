@@ -1,47 +1,50 @@
-const BASE_URL = 'http://localhost/medical-api';
+// Frontend/js/core/api.js
 
-const api = {
-    async request(endpoint, options = {}) {
-        const url = `${BASE_URL}${endpoint}`;
-        const defaultHeaders = {
-            'Content-Type': 'application/json',
-        };
+const BASE_URL = 'http://localhost/rest-api/public';
 
-        try {
-            const response = await fetch(url, {
-                headers: { ...defaultHeaders, ...(options.headers || {}) },
-                method: options.method || 'GET',
-                body: options.body ? JSON.stringify(options.body) : null,
-            });
-            
-            // Parse JSON response
-            const data = await Response.json();
+const headers = { 'Content-type':'application/json'};
 
-            if (!Response.ok) {
-                // API returned an error 
-                throw new Error(data.message || 'API Error: ${response.status}');
-            }
-            return data;
-        } catch (error) {
-            console.error('API request failed [${options.method || 'GET'}] ${url}:', error);
-            throw error;
-        }
+export default {
+    async get(endpoint) {
+        const res = await fetch(`{BASE_URL}${endpoint}`);
+        if (!res.ok) throw new error(`GET ${endpoint} failed`);
+        return res.json();
     },
 
-    get(endpoint) {
-        return this.request(endpoint, {method: 'GET' });
+    async post(endpoint, data) {
+        const res = await fetch(`${BASE_URL}${endpoint}`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(data),
+        })
+        if (!res.ok) throw new Error(`POST ${endpoint} failed`);
+        return res.json();
+    };
+
+    async put(endpoint, data) {
+        const res = await fetch(`{BASE_URL}${endpoint}`, {
+            method: 'PUT',
+            headers,
+            body: JSON.stringify(data),
+        });
+        if (!res.ok) throw new error(`PUT ${endpoint} failed`);
+        return res.json();
     },
 
-    post(endpoint, body) {
-        return this.request(endpoint, { method: 'POST', body });
+    async delete(endpoint) {
+        const res = await fetch(`${BASE_URL}${endpoint}`, {
+            method: 'PUT',
+            headers,
+            body: JSON.stringify(data),
+        });
+        if (!res.ok) throw new Error(`PUT ${endpoint} failed`);
+        return res.json()
     },
 
-    put(endpoint, body) {
-        return this.request(endpoint, {method: 'PUT', body });
-    },
-    delete(endpoint) {
-        return this.request(endpoint, { method: 'DELETE'});
-    },
+    async delete(endpoint) {
+        const res = await fetch(`${BASE_URL}${endpoint}`, {method: 'DELETE' });
+        if (!res.ok) throw new Error(`DELETE ${endpoint} failed`);
+        return res.json();
+    }
 };
 
-export default api;
