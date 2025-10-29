@@ -1,66 +1,70 @@
-// Frontend/js/controllers/PatientController.js
+// Frontend/js/controllers/PatientController.js 
 
-import api from '../core/api.js';
+import PatientModel from '../models/PatientModel.js';
+import PatientView from '../views/PatientView.js';
 
 class PatientController {
-    /* Fetch all patients */
-    static async getAllPatients() {
+    constructor() {
+        this.model = PatientModel;
+        this.view = new PatientView();
+
+        /* Initial render */
+        this.init();
+    }
+
+    async init() {
         try {
-            const response = await api.get('/patients');
-            return response;
+            const patients = await this.model.fetchAll();
+            this.view.renderPatients(patients);
+            this.view.renderPatientById(patient);
+
+            /* Bind event handlers correctly */
+            this.view.bindAddPatient(this.handleAddPatient.bind(this));
+            this.view.bindDeletePatient(this.handleDeletePatient(this));
+            this.view.bindEditPatient(this.handleEditPatient.bind(this));
         } catch (error) {
-            console.error('Error fetching patients:', error);
-            throw error;
+            console.error('Initialization failed:', error);
+            this.view.showError('failed to load patients. Please try again');
         }
     }
 
-    /* Fetch a single patient by ID */
-    static async getAllPatientById(patientId) {
+    /* HandleAddPatient */
+    async handleAddPatient(patientData) {
         try {
-            /* Use backticks for template literals */
-            const response = await api.get(`ptients/${patientId}`);
-            return response;
+            await this.model.create(patientData);
+            const patients = await this.model.fetchAll();
+            this.view.renderPatients(patients);
+            this.view.showSuccess('Patient added successfully');
         } catch (error) {
-            console.error(`Error fetching patient ${patientId}:`, error);
-            throw error;
+            console.error('Error adding patient:', error);
+            this.view.showError('Could not add patient. Please try again');
         }
     }
 
-    /* Create a new patient */
-    static async createPatient(patientData) {
+    /* Handle updating/editing a patients */
+    async handleEditPatient(patientId, updateData) {
         try {
-            const response = await api.post('/patients', patientData);
-            return response;
+            await this.model.update(patientId, updateData);
+            const patients = await this.model.fetchAll();
+            this.view.renderPatients(patients);
+            this.view.showSuccess('Patient updated successfully.');
         } catch (error) {
-            console.error('Error creating patient:', error);
-            throw error;
+            console.error('Error update patient. Place try again');
         }
     }
 
-    /* Update an existing patient */
-    static async updatePatient(patientId, patientData) {
+    /* Handle deleting a patient */
+    async handleDeletePatient(patientId) {
         try {
-            /* Corrected URL syntax */
-            const response = await api.put(`/patients/${patientId}`, patientData);
-            return response;
+            await this.model.delete(patientId);
+            const patients = await this.model.fetchAll();
+            this.view.renderPatients(patients);
+            this.view.showSuccess('Patient deleted successfully');
         } catch (error) {
-            console.error(`Error updating patient ${patientId}`, error);
-            throw response;
-        } 
-    }
-
-    /* Delete a patient */
-    static async deletePatient(patientId) {
-        try {
-            /* Corrected template literal and typo */
-            const response = await api.delete(`/patients/${patientId}`);
-            return response;
-        } catch (error) {
-            console.error(`Error deleting patient ${patientId}:`, error);
-            throw error;
+            console.error('Error deleting patient:', error);
+            this.view.showError('Could not delete patient. Please try again.');
         }
     }
 }
 
 export default PatientController;
-
