@@ -1,38 +1,49 @@
-/* Front/js/core/router.js */
+// Frontend/js/core/router.js 
 
-class Router {
-    constructor(routers) {
-        this.routes = this.routes; // { path: '/patients'/ view: PatientView }
-        this.content = document.getElementById('app'); // main content container 
-        window.addEventListener('hashchange', () => this.handleRouterChange());
-        window.addEventListener('load', () => this.handleRouterChange());
+export default class Router {
+    constructor() {
+        this.routes = {}; /* Registered routes */
+        this.notFound = null; /* Fallback route handler */ 
+        this.currentController = null; /* Keep track of active controller */
     }
 
-    // Load the correct view basted on the current hash
-    async handleRouterChange() {
-        const path = window.location.hash.slice(1) || '/';
-        const route = this.routes[path] || this.routes['/404'];
-        await this.renderView(route);
+    /* Register a new route */
+    addRoute(path, callback) {
+        this.routes[path] = callback;
+        return this;
     }
 
-    // Render the current view 
-    async renderView(viewClass) {
-        if (!viewClass) {
-            this.content.innerHTML = '<h2>Page not found</h2>';
-            return ;
-        }
-        const view = new viewClass();
-        this.content.innerHTML = await view.getHtml();
-        if (typeof view.onMounted === 'function') {
-            view.onMounted(); // optional hook to load data
-        }
+    /* Start router: attach hash change listener and local initial route */
+    start() {
+        window.addEventListener('hashchange', () => this._handleRouteChange());
+        this._handleRouteChange();
+        return this;
     }
 
-    // Navigate programmatically
+    /* Navigate programmatically to a route */
     navigate(path) {
-        window.location.hash = path;
+        window.location.hash = `#${path}`;
+    }
+
+    /* Internal: Parse current route and render appropriate controller */
+    _handleRouteChange() {
+        const path = window.location.hash.replace('#', '') || '/';
+        const routeHandler = this.routes[path];
+
+        /* Clean up previous controller if needed */
+        if (this.currentController && typeof this.currentController.destroy === 'function') {
+            this.currentController.destroy();
+        }
+
+        /* Execute route */
+        if (routeHandler) {
+            try {
+                this.currentController = routeHandler();
+            } catch (error) {
+                console.error(`Error rendering route "${path}":`, error);
+            }
+        } else {
+            document.getElementById('app').innerHTML = `<h2>404 - Page Not Found</h2>`;
+        }
     }
 }
-
-export default Router;
-
