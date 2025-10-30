@@ -1,4 +1,4 @@
-//Frontend/js/models/DoctorModel.js 
+// front/js/models/DoctorModel.js;
 
 import api from '../core/api.js';
 
@@ -7,11 +7,12 @@ class DoctorModel {
         this.doctors = [];
     }
 
-    /* Fetch all Doctor from backend */
-    async fetAll() {
+    /* Fetch all doctors from backend */
+    async fetchAll() {
         try {
             const response = await api.get('/doctors');
-            this.patients = response; 
+
+            this.doctors = response;
             return this.doctors;
         } catch (error) {
             console.error('Error fetching doctors:', error);
@@ -20,9 +21,8 @@ class DoctorModel {
     }
 
     /* Fetch a single doctor by ID */
-    async fetchById(doctorId) {
+    async fetchbyId(doctorId) {
         try {
-            /* Use GET and template literals */
             const response = await api.get(`/doctors/${doctorId}`);
             return response;
         } catch (error) {
@@ -36,28 +36,27 @@ class DoctorModel {
         try {
             const response = await api.post('/doctors', doctorData);
 
-            /* Update local cache if successful  */
+            /* Update local cache if successful */
             if (response && response.doctor_id) {
                 this.doctors.push(response);
             }
-            
             return response;
         } catch (error) {
             console.error('Error creating doctor:', error);
             throw error;
         }
     }
-    
+
     /* Update an existing doctor */
     async update(doctorId, doctorData) {
         try {
             const response = await api.put(`/doctors/${doctorId}`, doctorData);
 
-            /* Find index correctory */
-            const index = this.doctors.findIndex(d => d.doctor_id == doctorId);
+            const index = this.findIndex(d => d.doctor_id == doctorId);
             if (index !== -1) {
-                /* Update cached doctor */
-                this.doctors[index] = { ...this.doctors[index], ...doctorData };
+
+                /* Merge backend response to keep dta accurate */
+                this.doctors[index] = { ...this.doctors[index], ...response };
             }
             
             return response;
@@ -68,21 +67,19 @@ class DoctorModel {
     }
 
     /* Delete a doctor */
-    async delete(patientId) {
+    async delete(doctorId) {
         try {
             const response = await api.delete(`/doctors/${doctorId}`);
 
             /* Update local cache */
             this.doctors = this.doctors.filter(d => d.doctor_id != doctorId);
 
-            return response;
+            return response
         } catch (error) {
             console.error(`Error deleting doctor ${doctorId}:`, error);
-            throw error
+            throw error;
         }
     }
 }
 
-// Export a singleton instance
 export default new DoctorModel();
-
