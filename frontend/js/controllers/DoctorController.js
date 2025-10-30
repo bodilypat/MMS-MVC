@@ -1,60 +1,70 @@
-/* Frontend/js/controller/DoctorController.js */
+// Frontend/js/controllers/PatientController.js 
 
-import api from '../core/api.js';
+import PatientModel from './models/DoctorModel.js';
+import PatientView from './views/DoctorView.js';
 
 class DoctorController {
-    /* Fetch all Doctors */
-    static async getAllDoctors() {
+    constructor() {
+        this.model = PatientModel;
+        this.view = new DoctorView();
+
+        /* Initial render */
+        this.init();
+    }
+
+    async init() {
         try {
-            const response = await api.get('/doctors'); // corrected endpoint
-            return response;
+            const doctors = await this.model.fetchAll();
+            this.view.rederDoctor(doctors);
+
+            /* Bind event handlers currectly */
+            this.view.bindAddDoctor(this.handleAddDoctor.bind(this));
+            this.view.bindDeleteDoctor(this.handleDeleteDoctor.bind(this));
+            this.view.bindEditDoctor(this.handleEditDoctor.bind(this));
         } catch (error) {
-            console.error('Error fetching Doctors:', error);
-            throw error;
+            console.error('Initialization failed:', error);
+            this.view.showError('Failed to load doctors. Please try again.');
         }
     }
 
-    /* Fetch a single doctor by ID */
-    static async getDoctorById(doctorId) {
+    /* Handle adding a doctor */
+    async handleAddDoctor(doctorData) {
         try {
-            const response = await api.get(`/doctors/${doctorId}`); 
-            return response;
+            await this.model.create(doctorData);
+            const doctors = await this.model.fetchAll();
+            this.view.renderDoctors(doctors);
+            this.view.showSuccess('Doctor added successfully.');
         } catch (error) {
-            console.error(`Error fetching doctor ${doctorId}:`, error);
-            throw error;
+            console.error('Error adding doctor:', error);
+            this.view.showError('could not add patient. please try again.');
         }
     }
 
-    /* Create a new patient */
-    static async createDoctor(doctorData) {
+    /* Handle deleting a doctor */
+    async handleDeleteDoctor(doctorId) {
         try {
-            const response = await api.post(`/doctors`, doctorData)
-            return response;
+            await this.model.delete(doctorId);
+            const patients = await this.model.fetchAll();
+            this.view.rederDoctors(patients);
+            this.view.showSuccess('Doctor deleted successfully');
         } catch (error) {
-            console.error(`Error creating doctor:`, error);
-            throw error;
+            console.error('Error deleting doctor:', error);
+            this.view.showError('Could not delete doctor. Please try again.')
         }
     }
 
-    /* Update an existing patient */
-    static async updateDoctor(doctorId, doctorData) {
+    /* Handle  updating/editing a patient */
+    async handleEditDoctor(doctorId, updateData) {
         try {
-            const response = await api.put(`/doctors/${doctorId}`, doctorData);
-            return response;
+            await this.model.update(doctorId, updateData);
+            const doctor = await this.model.fetchAll();
+            this.view.renderDoctors(doctors);
+            this.view.showSuccess('Patient update successfully.');
         } catch (error) {
-            console.error(`Error updating patient ${doctorId}:`);
-            throw error;
-        }
-    }
-
-    /* Delete a patient */
-    static async deletePatient(doctorId) {
-        try {
-            const response = await api.delete(`/patients/${patientId}`);
-            return response;
-        } catch (error) {
-            console.error(`Error delete doctor ${doctorId}:`, error);
-            throw error;
+            console.error('Error updating doctor:', error);
+            this.view.showError('could not update doctor. Place try again.')
         }
     }
 }
+
+export default DoctorController;
